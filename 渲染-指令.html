@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="firstController">
+    <p ng-bind="1+1"></p>
+    <!-- H5 -->
+    <p data-ng-bind="1+1"></p>
+
+    <p ng-bind-template="{{ 1+1 }}"></p>
+
+    <ul ng-init="ctiyArr=['a','b','c']">
+        <li ng-repeat="ctiy in ctiyArr" ng-class-even="'偶数'" ng-class-odd="'奇数'">
+            {{ $index }}
+            {{ $first }}
+            {{ $middle }}
+            {{ $last }}
+            {{ city }}
+        </li>
+    </ul>
+    <div ng-include="'test1.html'"></div>
+    <div ng-include src="'test1.html'"></div>
+
+    <div ng-style="{'color':'red','margin-top':'50px'}">style</div>
+
+    <ul ng-switch on="status=false">
+        <li ng-switch-when="true">true</li>
+        <li ng-switch-when="false">false</li>
+    </ul>
+
+
+
+
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+    app.controller('firstController',['$scope',function($scope){
+        console.log($scope);
+
+    }]);
+
+
+</script>
+</body>
+</html>

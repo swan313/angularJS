@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div ng-controller="MainCtrl">
+    <select ie-select-fix="options" ng-model="demos" class="form-control" ng-options="currOption.valuse as currOption.text for currOption in options">
+        <option value="" default>Select</option>
+    </select>
+    <button class="btn" type="button" ng-click="changeOptions();">add</button>
+</div>
+
+
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+     https://github.com/greengerong/angular-ie-enhancer
+     ieSelectFix:在ie(8,9,10)对于克隆节点不会及时更新,
+     所以针对ng-options在ng-switch(主要是ng-transclude，存在克隆节点)后台options的model改变，
+     不会及时更新
+    */
+
+    'use strict';
+
+    angular.module('ie.select',[]).directive('ieSelectFix',[function(){
+        return {
+            restrict: 'A',
+            require: 'select',
+            link: function(scope,element,attributes){
+                var isIE = document.attachEvent;
+                if(!isIE) return;
+                var control = element[0];
+                scope.$watch(attributes.ieSelectFix,function(){
+                    var option = document.createElement("option");
+                    control.add(option,null);
+                    control.remove(control.options.length - 1);
+                });
+            }
+        }
+    }]);
+
+
+
+    var app = angular.module('app',['ie.select']);
+
+    app.controller("MainCtrl",function($scope){
+        $scope.vm = {};
+        $scope.options = [
+            {
+                text: "text1",
+                value: "value1"
+            },
+            {
+                text: "text2",
+                value: "value2"
+            }
+        ];
+        $scope.changeOptions = function () {
+            $scope.options.length = 0;
+            for (var j = 0; j < 5; j++) {
+                var i = Math.floor(Math.random() * 100);
+                $scope.options.push({
+                    text: "text" + i,
+                    value: "value" + i
+                });
+            }
+        };
+
+    });
+
+
+
+
+
+</script>
+</body>
+</html>

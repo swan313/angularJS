@@ -1,2 +1,2 @@
 # angularJS
-angularJS 写的范例
+angularJS 写的范例，以及注释说明

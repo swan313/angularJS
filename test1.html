@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+aaaaaaaaaaaaaaaaaaaaaaa
+<ul ng-controller="firstController">
+    <li>{{list.nickName}}</li>
+    <li>{{ a }}</li>
+    <li>{{ b.a }}</li>
+</ul>
+
+<!--<ul ms-controller="NewShareskings">-->
+    <!--<li>{{ list.nickName }}</li>-->
+    <!--<li>{{ a }}</li>-->
+<!--</ul>-->
+
+<script src="../js/jquery-1.11.3.js"></script>
+<script src="../js/httpUtil.js"></script>
+<script src="../js/jquery-jsonp.js"></script>
+<script src="../js/angular-1.4.7.js"></script>
+<!--<script src="js/avalon.js"></script>-->
+<script>
+    'use strict';
+    var app = angular.module('app',[]);
+    var first = app.controller('firstController',['$scope','$http',function($scope,$http){
+        $scope.list = {};
+        $scope.a = 'a';
+        $scope.b = {a:'1',b:'2'};
+
+
+
+        /*$http({
+            method: 'JSONP',
+            url: 'http://www.hczq.com/message/hot.do',
+            params: {cp:1, ps:20}
+        }).success(function(data) {
+            console.log(data);
+        });*/
+
+
+        $http({
+            method: 'JSONP',
+            url: 'http://www.hczq.com/message/hot.do?callback=JSON_CALLBACK',
+            params: {cp:1, ps:20}
+        }).success(function(data, status, headers, config) {
+            console.log(data);
+        }).error(function(data, status, headers, config) {});
+
+
+
+    }]);
+
+//    var askNewShares = avalon.define("NewShareskings",function(vm){
+//        vm.list = {};
+//        vm.a = 1213;
+//        console.log(vm.list);
+//    });
+
+    $(function(){
+        askShares.getSpeakOut();
+    });
+
+    var askShares = {
+        getSpeakOut: function(){
+            var url = 'http://www.hczq.com/message/hot.do',
+                    data = {cp: 1, ps: 20};
+            ajaxJson(url, data, this.getSpeakOutResult, 'callback', null, null, null);
+        },
+        getSpeakOutResult: function(result){
+//            askNewShares.list = result.list[0];
+            first.list = result.list[0];
+            console.log(first.list);
+            console.log(first.a);
+        }
+    };
+
+
+    /*$http({
+        method: string,
+        url: string,
+        params: object,
+        data: string or object,
+        headers: object,
+        transformRequest: function transform(data, headersGetter) or an array of functions,
+        transformResponse: function transform(data, headersGetter) or an array of functions,
+        cache: boolean or Cache object,
+        timeout: number,
+        withCredentials: boolean
+    }).success(function() {//处理成功的情况});*/
+
+
+</script>
+</body>
+</html>

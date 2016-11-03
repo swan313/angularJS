@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div ng-controller="MainCtrl">
+    MainCtrl:
+    <input type="text" focus ng-model="user.name" />
+</div>
+<div ng-controller="SecondCtrl">
+    SecondCtrl:
+    <input type="text" ng-model="user.name" />
+</div>
+
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+    'use strict';
+    var app = angular.module('app',[]);
+    app.directive('focus',function(){
+        return {
+            link: function(scope,element,attrs){
+                element[0].focus();
+            }
+        }
+    });
+
+    app.factory('UserInformation',function(){
+        var user = {
+            name: 'Angular.js'
+        };
+        return user;
+    });
+
+    app.controller("MainCtrl",function($scope,UserInformation){
+        $scope.user = UserInformation;
+    });
+    app.controller("SecondCtrl",function($scope,UserInformation){
+        $scope.user = UserInformation;
+    });
+
+
+
+
+
+
+</script>
+</body>
+</html>

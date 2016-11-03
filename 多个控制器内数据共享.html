@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="firstController">
+    first.data<input type="text" ng-model="data.name"/>
+    first.Data<input type="text" ng-model="Data.message"/>
+    <p>first-name: {{ data.name }}</p>
+    <p>first-message: {{ Data.message }}</p>
+</div>
+<div ng-controller="secondController">
+    <p>second-name: {{ data.name }}</p>
+    <p>second-message: {{ Data.message }}</p>
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+    app.factory('Data',function(){
+        return {
+            message: '共享的数据'
+        }
+    });
+    app.controller("firstController",['$scope','Data',function($scope,Data){
+        $scope.data = {
+            name: '张三'
+        };
+
+        $scope.Data = Data;
+    }]);
+    app.controller('secondController',['$scope','Data',function($scope,Data){
+        //作用域里可以用查找兄弟controller等方法共享数据
+        $scope.data = $scope.$$prevSibling.data;
+
+        $scope.Data = Data;
+    }]);
+
+
+</script>
+</body>
+</html>

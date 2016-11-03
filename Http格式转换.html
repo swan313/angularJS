@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+     对于部分单独的http request设置：
+
+     对于http ajax方式最后一个参数都是关于http的配置信息，其中包括一项transformRequest，
+     我们可以利用transformRequest在ajax发送数据之前改变数据的格式
+     这里利用jQuery的$.param进行表单提交方式的格式转化，所以我们能够看见的request body 为：
+     id=1&name=greengerong
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+    app.controller("demoCtr",['$scope','$http',function($scope,$http){
+        $http.post('/url',{
+           id: 1,
+            name: 'grengerong'
+        },{
+            transformRequest: function(request){
+                return $.param(request);
+            }
+        });
+
+    }]);
+
+    /*
+    * 对于整个app的http request设置：
+     如果我们需要对整个http的数据转化格式进行设置，那么可以选用在config阶段对$httpProvider默认行为进行设置：
+
+    * */
+    angular.module('app',[])
+            .config(['4httpProvider',function($httpProvider){
+                $httpProvider.defaults.transformRequest = [
+                        function(request){
+                            return $.param(request);
+                        }
+                ];
+            }]);
+
+</script>
+</body>
+</html>

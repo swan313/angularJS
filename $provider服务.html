@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="DemoCtrl">
+    {{ name }}
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[],function($provide){
+        //自定义服务
+        $provide.provider('CustomService',function(){
+            this.$get = function(){
+                return {
+                    message: 'CustomService Message'
+                }
+            };
+        });
+
+        // 自定义工厂服务，返回的东西可以是字符串，也可以是对象
+        $provide.factory('CustomService2',function(){
+            return [1,2,3];
+        });
+
+        //自定义服务,返回的东西必须是对象
+        $provide.service('CustomService3',function(){
+            return ['上海'];
+        });
+    });
+    app.controller("DemoCtrl",['$scope','CustomService3',function($scope,CustomService3){
+        $scope.name = '张三';
+//        console.log(CustomService);
+        console.log(CustomService3);
+
+    }]);
+
+
+</script>
+</body>
+</html>

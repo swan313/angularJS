@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body ng-controller="demo">
+<select ng-model="a" ng-options="value.field as getDesc1(key,value) for (key,value) in t"></select>
+
+<select  ng-model="b" ng-options="l.field as getDesc(l) for l in t | index "></select>
+
+
+
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+    var app = angular.module('app',[]);
+    app.controller("demo", function($scope){
+        $scope.t = [{
+            "field": "jw_companyTalent"
+        }, {
+            "field": "jw_reportgroup"
+        }];
+        $scope.getDesc1 = function(key,value){
+            return (parseInt(key,10) + 1) + "->" + value.field;
+        };
+
+
+        $scope.getDesc = function(l) {
+            return l.order + "->" + l.field;
+        };
+    }).filter("index", [
+        function() {
+            return function(array) {
+                return (array || []).map(function(item, index) {
+                    item.order = index + 1;
+                    return item;
+                });
+            };
+        }
+    ]);
+
+</script>
+</body>
+</html>

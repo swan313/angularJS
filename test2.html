@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/jquery-1.11.3.js"></script>
+    <script src="../js/httpUtil.js"></script>
+    <script src="../js/jquery-jsonp.js"></script>
+    <script src="../js/angular-1.4.7.js"></script>
+    <script>
+        'use strict';
+        var app = angular.module('app',[]);
+        var first = app.controller('firstController',['$scope',function($scope){
+            $scope.list = {};
+            $scope.a = 'a';
+            $scope.b = {a:'1',b:'2'}
+
+
+        }]);
+
+        $(function(){
+            askShares.getSpeakOut();
+        });
+
+        var askShares = {
+            getSpeakOut: function(){
+                var url = 'http://www.hczq.com/message/hot.do',
+                        data = {cp: 1, ps: 20};
+                ajaxJson(url, data, this.getSpeakOutResult, 'callback', null, null, null);
+            },
+            getSpeakOutResult: function(result){
+//            askNewShares.list = result.list[0];
+
+                //在外部调用controller时，这么写
+                var scope = angular.element(jQuery("#lstFirst")).scope();
+                scope.list = result.list;
+                console.log(scope.list);
+                console.log(scope.a);
+                scope.$digest();
+            }
+        };
+
+    </script>
+</head>
+<body id="lstFirst" ng-controller="firstController">
+
+
+    <ul>
+        <li ng-repeat="new in list">{{new.nickName}}</li>
+        <!--<li>{{ a }}</li>-->
+        <!--<li>{{ b.a }}</li>-->
+    </ul>
+
+
+
+<!--<ul ms-controller="NewShareskings">-->
+    <!--<li>{{ list.nickName }}</li>-->
+    <!--<li>{{ a }}</li>-->
+<!--</ul>-->
+<!--<script src="js/avalon.js"></script>-->
+
+</body>
+</html>

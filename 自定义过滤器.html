@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="firstController">
+    <ul>
+        <li ng-repeat="user in data | filterAge">
+            {{ user.name }}
+            {{ user.age }}
+            {{ user.city }}
+        </li>
+    </ul>
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[],function($filterProvider,$provide,$controllerProvider){
+        $provide.service('Data',function(){
+            return [
+                {name:'张三',age:'20',city:'上海'},
+                {name:'李四',age:'30',city:'北京'}
+            ];
+        });
+        //第一种方法
+        $filterProvider.register('filterAge',function(){
+            return function(obj){
+                var newObj = [];
+                angular.forEach(obj,function(o){
+                    if(o.age > 20){
+                        newObj.push(o);
+                    }
+                });
+                return newObj;
+            }
+        });
+
+        $controllerProvider.register('firstController',function($scope,Data){
+            $scope.data = Data;
+        });
+    });
+
+    //第二种方法 module.filter
+    app.filter('filterCity',function(){
+        return function(obj){
+            var newObj = [];
+            angular.forEach(obj,function(o){
+                if(o.city === '上海'){
+                    newObj.push(o);
+                }
+            });
+            return newObj;
+        }
+    });
+
+
+</script>
+</body>
+</html>

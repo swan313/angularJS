@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="firstController">
+
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+
+    /*隐示的依赖注入
+    app.controller('firstController',function($scope){
+
+    });*/
+
+    //显示的依赖注入
+    app.controller('firstController',['$scope',function($scope){
+        console.log($scope);
+    }]);
+
+    /*function otherController(a){
+        console.log(a);
+    }
+    otherController.$inject = ['$scope'];*/
+
+</script>
+</body>
+</html>

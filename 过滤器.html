@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="firstController">
+    {{ 1234214354 | number }}<br/>
+    {{ 12342.14354 | number:3 }}<br/><br/>
+    {{ 12342.14354 | currency }}<br/>
+    {{ 12342.14354 | currency:'RMB' }}<br/><br/>
+
+    {{ tody }}<br/>
+    {{ tody |date:'medium' }}<br/>
+    {{ tody |date:'short' }}<br/>
+    {{ tody |date:'fullDate' }}<br/>
+    {{ tody |date:'longDate' }}<br/>
+    {{ tody |date:'mediumDate' }}<br/>
+    {{ tody |date:'shortDate' }}<br/>
+    {{ tody |date:'mediumTime' }}<br/>
+    {{ tody |date:'shortTime' }}<br/><br/>
+
+    <p>
+        year:<br/>
+        {{ tody |date:'y' }}<br/>
+        {{ tody |date:'yy' }}<br/>
+        {{ tody |date:'yyyy' }}<br/><br/>
+    </p>
+    <p>
+        month:<br/>
+        {{ tody |date:'M' }}<br/>
+        {{ tody |date:'MM' }}<br/>
+        {{ tody |date:'MMM' }}<br/>
+        {{ tody |date:'MMMM' }}<br/><br/>
+    </p>
+    <p>
+        day:<br/>
+        {{ tody |date:'d' }}<br/>
+        {{ tody |date:'dd' }}<br/>
+        {{ tody |date:'EEE' }}<br/>
+        {{ tody |date:'EEEE' }}<br/>
+    </p>
+    <p>
+        hour:<br/>
+        {{ tody |date:'H' }}<br/>
+        {{ tody |date:'HH' }}<br/>
+        {{ tody |date:'h' }}<br/>
+        {{ tody |date:'hh' }}<br/>
+    </p>
+    <p>
+        minute:<br/>
+        {{ tody |date:'m' }}<br/>
+        {{ tody |date:'mm' }}<br/>
+    </p>
+    <p>
+        second:<br/>
+        {{ tody |date:'s' }}<br/>
+        {{ tody |date:'ss' }}<br/>
+        {{ tody |date:'.sss' }}<br/>
+    </p>
+    {{ tody |date:'y-MM-dd H:m:s' }}<br/>
+
+    <p>
+        {{ [1,2,3,4,5] | limitTo: 3 }}<br/>
+        {{ [1,2,3,4,5] | limitTo: -2 }}<br/>
+    </p>
+    <p>{{ message | lowercase }}</p>
+    <p>{{ message | uppercase }}</p>
+    <p>{{ city |filter:'上海' }}</p>
+    <p>{{ city |filter:{py:'g'} }}</p>
+    <p>
+        <!-- 默认顺序是  正序 a-z -->
+        {{ city | orderBy: 'py' }}
+    </p>
+    <p>
+        <!-- 默认顺序是  反序 z-a -->
+        {{ city | orderBy: '-py' }}
+    </p>
+    <p>
+        <!--  自定义 -->
+        {{ city | filter: checkName }}
+    </p>
+</div>
+
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+    app.controller("firstController",['$scope','$filter',function($scope,$filter){
+        $scope.tody = new Date();
+        $scope.message = 'Hello angular';
+
+        $scope.city = [
+            {name:'上海',py:'shanghai'},
+            {name:'北京',py:'beijing'},
+            {name:'四川',py:'sichuan'}
+        ];
+
+        //过滤器
+        var number = $filter('number')(3000);
+
+        //json
+        var jsonString = $filter('json')($scope.city);
+//        console.log(jsonString);
+//        console.log($scope.city);
+
+
+        $scope.checkName = function(obj){
+            if(obj.py.indexOf('h') === -1){
+                return false;
+            }
+            return true;
+        };
+    }]);
+
+
+</script>
+</body>
+</html>

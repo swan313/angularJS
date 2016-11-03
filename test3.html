@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+
+
+<body id="lstFirst" ng-controller="firstController">
+<ul>
+    <li ng-repeat="news in list">{{news.nickName}}</li>
+    <li>{{ a }}</li>
+    <li>{{ b.a }}</li>
+</ul>
+
+<ul>
+    <li>{{ list2.r }}</li>
+    <li ng-bind="list2.autoMsg"></li>
+</ul>
+
+<script src="../js/jquery-1.11.3.js"></script>
+<script src="../js/httpUtil.js"></script>
+<script src="../js/jquery-jsonp.js"></script>
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+    'use strict';
+    var app = angular.module('app',[]);
+    var first = app.controller('firstController',['$scope',function($scope){
+        $scope.list = {};
+        $scope.a = 'a';
+        $scope.b = {a:'1',b:'2'};
+
+        $scope.list2 = '';
+
+
+    }]);
+
+    $(function(){
+        askShares.getSpeakOut();
+        askShares.getSpeak();
+        askShares.getJsonp();
+    });
+
+    var askShares = {
+        getSpeakOut: function(){
+            var url = 'http://www.hczq.com/message/hot.do',
+                    data = {cp: 1, ps: 20};
+            ajaxJson(url, data, this.getSpeakOutResult, 'callback', null, null, null);
+        },
+        getSpeakOutResult: function(result){
+            //在外部调用controller时，这么写
+            var scope = angular.element(jQuery("#lstFirst")).scope();
+            scope.list = result.list;
+            console.log(scope.list);
+            console.log(scope.a);
+            scope.$digest();
+        },
+        getSpeak: function(){
+            var url = 'data/data1.txt',
+                    data = {};
+            $.ajax({url: url,data: data,success: this.getSpeakResult});
+        },
+        getSpeakResult: function(result){
+            var scope = angular.element(jQuery('body')).scope();
+            scope.list2 = eval('('+result+')');
+            scope.$digest();
+        },
+        //jsonp方式获取
+        getJsonp: function(){
+            var url = 'http://www.hczq.com/message/hot.do',
+                    data = {cp: 1, ps: 20};
+            $.ajax({
+                type:"get",
+                url:url,
+                data:data,
+                dataType:'jsonp',
+                jsonp: 'jsoncallback',
+                success:this.getJsonpResult
+            });
+        },
+        getJsonpResult: function(result){
+            var _result = eval('('+result+')');
+            console.log(_result.message);
+        }
+
+    };
+
+</script>
+</body>
+</html>

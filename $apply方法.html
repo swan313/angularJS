@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="DemoCtrl">
+    {{ date }}
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+     */
+
+    'use strict';
+
+    var app = angular.module("app", []);
+    /*app.controller("DemoCtrl",['$scope',function($scope){
+     $scope.date = new Date();
+     }]);*/
+
+    app.controller("DemoCtrl", ['$scope', function ($scope) {
+        $scope.date = new Date();
+        /*setInterval(function(){
+         $scope.date = new Date();
+         //$apply如果不给参数的话，会检查该$scope里的所有监听的属性，推荐给上参数
+         $scope.$apply();
+         },1000);*/
+
+
+        setInterval(function () {
+            $scope.$apply(function () {
+                $scope.date = new Date();
+            });
+        }, 1000);
+
+    }]);
+
+
+</script>
+</body>
+</html>

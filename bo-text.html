@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div ng-controller="MainCtrl">
+    <ul>
+        <li bindonce ng-repeat="session in sessions">
+            <div class="info">
+                <span bo-text="session.name"></span>-
+                <span bo-text="session.room"></span>-
+                <span bo-text="session.hour"></span>
+            </div>
+            <div class="likes">
+                {{ session.likes }} likes!
+                <button ng-click="likeSession(session)">Like it!</button>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+
+<script src="../js/angular-1.4.7.js"></script>
+<script src="../js/bindonce.min.js"></script>
+<script>
+
+    /*
+     https://github.com/Pasvaz/bindonce#attribute-usage
+     bindonce 网址
+     Bindonce是一系列绑定但是不带watch的指令集
+    */
+
+    'use strict';
+    var app = angular.module('app',['pasvaz.bindonce']);
+
+    app.controller("MainCtrl",function($scope){
+        $scope.sessions = [
+            {name:'aaa',room:'aaaa',hour:'aaaa',likes:'aaaa'},
+            {name:'nnn',room:'nnnn',hour:'nnnn',likes:'nnnn'}
+        ];
+        $scope.likeSession = function(session){
+
+        };
+
+    });
+
+
+
+
+
+</script>
+</body>
+</html>

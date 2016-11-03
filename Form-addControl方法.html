@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body ng-controller="demoCtr as demo">
+<div ng-form="form" name="form" class="form-horizontal">
+    <pre>{{form.age.$error | json}}</pre>
+    <pre>data: {{demo.data |json }}</pre>
+    <div ng-repeat="item in demo.fields">
+        <div class="control-group">
+            <label class="control-label">{{item.label }} : </label>
+            <div class="controls">
+                <input type="number"  dy-name="item.field" ng-model="demo.data[item.field]" min="10" max="500"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+     实现为在post link阶段获取到form controller，并把自己注册到form controller，而且为了消除对象的级联，将会在scope摧毁阶段remove自己。
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+    app.directive("dyName", [
+        function() {
+            return {
+                require: "ngModel",
+                link: function(scope, elm, iAttrs, ngModelCtr) {
+                    ngModelCtr.$name = scope.$eval(iAttrs.dyName);
+                    console.log(ngModelCtr);
+                    var formController = elm.controller('form') || {$addControl: angular.noop};
+                    formController.$addControl(ngModelCtr);
+                }
+            };
+        }
+    ]);
+    app.controller("demoCtr",[function(){
+        var vm = this;
+        vm.data = {};
+
+        vm.fields =[{
+            "label": "age",
+            "field": "age"
+        }, {
+            "label": "hight",
+            "field": "hight"
+        }];
+
+        return vm;
+
+    }]);
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body ng-controller="demo as d">
+<div ng-click="d.click('parent',$event)">
+    given some text for click
+    <hr/>
+    <input type="checkbox" ng-model="d.stopPropagation"/>stop propagation?
+    <hr/>
+    <button type="button" ng-click="d.click('button',$event)">button</button>
+</div>
+
+
+
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+    var app = angular.module('app',[]);
+    app.controller("demo", function(){
+        var vm = this;
+        vm.click = function(name,$event){
+            console.log(name+"---called");
+            if(vm.stopPropagation){
+                $event.stopPropagation();
+            }
+        };
+        return vm;
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css"/>
+
+</head>
+<body>
+
+<div ng-controller="firstController">
+
+
+
+
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+        constant(name,object): 此方法首先运行，可以用它来声明整个应用范围内的常量，并且让它们
+                在所有配置(config方法里)和实例(controller,service等)方法中都可用
+        value(name,object): 如果只是想在服务内得到一些内容，可以通过value来申请常量
+        run(initializationFn): 想要在注入启动之后执行某些操作，而这些操作需要在页面对用户可用之前
+                执行，可以使用此方法。比如加载远程的模板，需要在使用前放入缓存，或者在使用操作前判断用户
+                是否登录，未登录可以先去登录页面
+
+    */
+
+    'use strict';
+
+
+    var app = angular.module("app",[],['$provide',function($provide){
+        //$provide.factory
+        //$provide.service
+        //$provide.constant
+        //$provide.value
+
+    }]);
+
+    app.config(function(APIKEY){
+        console.log(APIKEY);
+    });
+
+    //在config之后controller等其他服务之前。。
+    app.run(function(){
+        console.log('run');
+    });
+
+    //快捷方法
+    //它是可以注入任何方法
+    app.constant('APIKEY','xxx');
+
+    //只能注入consoller ...service factory
+    app.value('vension','1.0.0');
+
+    app.controller('firstController',['APIKEY',function(APIKEY){
+        console.log(APIKEY);
+    }]);
+
+
+</script>
+</body>
+</html>

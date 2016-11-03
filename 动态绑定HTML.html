@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="DemoCtrl as demo">
+    <div ng-bind-html="demo.html"></div>
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+     这里创建了一个叫dy-compile的指令，它首先会监听绑定属性html值的变化，
+     当html内容存在的时候，它会尝试首先创个一个子scope，
+     然后利用$compile服务来动态连接传入的html，并替换掉当前DOM节点；
+     这里创建子scope的原因，是方便在每次销毁DOM的时，也能容易的销毁掉scope，
+     去掉HTML compile带来的watchers函数，并在最后的父scope销毁的时候，
+     也会尝试销毁该scope。
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+    app.controller("DemoCtrl",['$sce',function($sce){
+        var vm = this;
+        var html = '<p>hello <a href="https://angular.io/">angular</a></p>';
+        vm.html = $sce.trustAsHtml(html);
+        return vm;
+    }]);
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div ng-controller="DemoCtrl">
+    <table ng-show="cart.length">
+        <tr>
+            <th>产品编号</th>
+            <th>产品名称</th>
+            <th>购买数量</th>
+            <th>产品单价</th>
+            <th>产品总价</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="item in cart">
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+                <button type="button" ng-click="reduce(item.id)">-</button>
+                <!--{{ item.quantity }}-->
+                <input type="text" ng-model="item.quantity" value="{{ item.quantity }}" />
+                <button type="button" ng-click="add(item.id)">+</button>
+            </td>
+            <td>{{ item.price | currency:'RMB' }}</td>
+            <td>{{ item.price * item.quantity | currency:'RMB' }}</td>
+            <td>
+                <button type="button" ng-click="remove(item.id)">删除</button>
+            </td>
+        </tr>
+        <tr>
+            <td>总购买价</td>
+            <td>{{ totalPrice() }}</td>
+            <td>总购买数量</td>
+            <td>{{ totalQuantity() }}</td>
+            <td></td>
+            <td><button type="button" ng-click="cart=null">清空购物车</button></td>
+        </tr>
+    </table>
+    <p ng-show="!cart.length">你的购物车为空</p>
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+    app.controller("DemoCtrl",['$scope',function($scope){
+        $scope.cart = [
+            {id:1000,name:'ipad',quantity:5,price:6900},
+            {id:123,name:'ipad1',quantity:12,price:3000},
+            {id:4545,name:'ipad2',quantity:6,price:500},
+            {id:788,name:'ipad3',quantity:11,price:900}
+        ];
+
+        //找一个元素的索引
+        $scope.findIndex = function(id){
+            var index = -1;
+            angular.forEach($scope.cart,function(item,key){
+                if(item.id === id){
+                    index = key;
+                    return;
+                }
+            });
+            return index;
+        };
+
+        //计算购物总价
+        $scope.totalPrice = function(){
+            var total = 0;
+            angular.forEach($scope.cart,function(item){
+                total += parseInt(item.quantity) * item.price;
+            });
+            return total;
+        };
+        //计算总购买数
+        $scope.totalQuantity = function(){
+            var total = 0;
+            angular.forEach($scope.cart,function(item){
+                total += parseInt(item.quantity);
+            });
+            return total;
+        };
+
+        //删除
+        $scope.remove = function(id){
+            var index = $scope.findIndex(id);
+            if(index !== -1){
+                $scope.cart.splice(index,1);
+            }
+        };
+
+        //为某个产品添加一个数量
+        $scope.add = function(id){
+            var index = $scope.findIndex(id);
+            if(index !== -1){
+                ++$scope.cart[index].quantity;
+            }
+        };
+
+        //为某个产品减少一个数量
+        $scope.reduce = function(id){
+            var index = $scope.findIndex(id);
+            if(index !== -1){
+                var item = $scope.cart[index];
+                if(item.quantity > 1){
+                    --$scope.cart[index].quantity;
+                }else{
+                    var returnKey = confirm('是否从购物车内删除该产品？');
+                    if(returnKey){
+                        $scope.remove(id);
+                    }
+                }
+            }
+        };
+
+        $scope.$watch('cart',function(newValue,oldValue){
+            var oldV = oldValue;
+            angular.forEach(newValue,function(item,key){
+                if(item.quantity < 1){
+                    var returnKey = confirm('是否从购物车内删除该产品？');
+                    if(returnKey){
+                        $scope.remove(item.id);
+                    }else{
+                        item.quantity = oldV[key].quantity;
+                    }
+                }
+            });
+        },true);
+
+    }]);
+
+
+</script>
+</body>
+</html>

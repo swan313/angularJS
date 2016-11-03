@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div ng-controller="MainCtrl">
+    <input type="text" focus ng-model="user.name" />
+    <button ng-click="greet()">Click here!</button>
+    <h3>{{ message }}</h3>
+
+</div>
+
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+    'use strict';
+    var app = angular.module('app',[]);
+    app.directive('focus',function(){
+        return {
+            link: function(scope,element,attrs){
+                element[0].focus();
+            }
+        }
+    });
+
+    app.controller("MainCtrl",function($scope){
+
+    });
+
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        table span{
+            width: 15px;
+            height:15px;
+            display: inline-block;
+        }
+        th.dropup span{
+            background:#ccc;
+        }
+        span.caret{
+            background:red;
+        }
+
+        .orderColor{color:#399;}
+    </style>
+
+</head>
+<body>
+<div ng-controller="firstController">
+    <form action="">
+        <input type="text" ng-model="search"/>
+    </form>
+    <table>
+        <tr>
+            <th ng-click="changeOrder('id')" ng-class="{dropup:order === ''}" width="20%">
+                产品编号
+                <span ng-class="{orderColor:orderType === 'id'}" class="caret">1</span>
+            </th>
+            <th ng-click="changeOrder('name')" ng-class="{dropup:order === ''}" width="20%">
+                产品名称
+                <span ng-class="{orderColor:orderType === 'name'}" class="caret">2</span>
+            </th>
+            <th ng-click="changeOrder('price')" ng-class="{dropup:order === ''}" width="20%">
+                产品价格
+                <span ng-class="{orderColor:orderType === 'price'}" class="caret">3</span>
+            </th>
+        </tr>
+        <tr ng-repeat="product in productData | filter:{id:search} | orderBy:order+orderType">
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price | currency:'(RMB)' }}</td>
+        </tr>
+    </table>
+</div>
+
+<script src="../js/angular-1.4.7.js"></script>
+<script>
+
+    /*
+
+    */
+
+    'use strict';
+
+    var app = angular.module("app",[]);
+    app.service('productData',function(){
+        return [
+            {id:333,name:'iphone',price:5400},
+            {id:980,name:'idpad',price:3420},
+            {id:885,name:'imac',price:15400},
+            {id:1245,name:'ipad air',price:2340},
+            {id:5345,name:'ipad mini',price:2200}
+        ]
+    });
+    app.controller("firstController",['$scope','productData','$filter',function($scope,productData,$filter){
+        $scope.productData = productData;
+
+        $scope.orderType = 'id';
+        $scope.order = '-';
+
+        $scope.changeOrder = function(type){
+            $scope.orderType = type;
+            if($scope.order === ''){
+                $scope.order = '-';
+            }else{
+                $scope.order = '';
+            }
+        };
+
+    }]);
+
+
+</script>
+</body>
+</html>
